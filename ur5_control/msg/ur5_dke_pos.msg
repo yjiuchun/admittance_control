@@ -1,0 +1,13 @@
+float64 x
+float64 y
+float64 z   
+float64 qw
+float64 qx
+float64 qy
+float64 qz
+float64 arm1
+float64 arm2
+float64 arm3
+float64 arm4
+float64 arm5
+float64 arm6

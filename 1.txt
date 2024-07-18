@@ -1,0 +1,3 @@
+roslaunch ur_gazebo ur5_gazebo.launch transmission_hw_interface:=hardware_interface/EffortJointInterface
+
+

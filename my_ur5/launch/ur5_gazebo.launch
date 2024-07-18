@@ -1,0 +1,47 @@
+<launch>
+    <!-- 设置launch文件的参数 -->
+    <!-- <arg name="world_name" value="$(find car_16)/worlds/room1.world"/> -->
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+
+    <!-- 运行gazebo仿真环境 -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <!-- <arg name="world_name" value="$(arg world_name)" /> -->
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="gui" value="$(arg gui)" />
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="headless" value="$(arg headless)"/>
+    </include>
+
+    <!-- 加载机器人模型描述参数 -->
+    <param name="robot_description" textfile="$(find my_ur5)/urdf/gazebo_ur5_robot.urdf" /> 
+
+    <!-- 运行joint_state_publisher节点，发布机器人的关节状态  -->
+    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node>  -->
+
+    <!-- 运行robot_state_publisher节点，发布tf  -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"  output="screen" >
+        <param name="publish_frequency" type="double" value="50.0" />
+    </node>
+
+    <!-- 在gazebo中加载机器人模型-->
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+          args="-urdf -model mrobot -param robot_description"/>
+
+    <!-- 加载机械臂关节控制器 -->
+    <rosparam file="$(find my_ur5)/config/ros_controllers.yaml" command="load"/>
+
+    <!-- Load the controllers -->
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" args="arm_group_controller joint_state_controller"/>
+
+    <node
+    name="rviz"
+    pkg="rviz"
+    type="rviz"
+    args="-d $(find my_ur5)/rviz/rviz.rviz" />
+</launch>

@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <arg name="TOPIC_WRENCH_STATE" default="/ft_sensor_topic"/>
+  <param name="topic_wrench_state" value="$(arg TOPIC_WRENCH_STATE)"/>
+
+
+  <rosparam file="$(find ur5_control)/config/AdmittancePosParams.yaml" command="load"/>
+
+  <node pkg="ur5_control" name="ur5_control" type="admittance_pos" output="screen"/>
+
+</launch>

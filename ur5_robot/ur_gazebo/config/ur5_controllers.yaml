@@ -1,0 +1,80 @@
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: &loop_hz 125
+
+arm_group_controller:
+  type: effort_controllers/JointTrajectoryController
+  joints: &robot_joints
+    - shoulder_pan_joint
+    - shoulder_lift_joint
+    - elbow_joint
+    - wrist_1_joint
+    - wrist_2_joint
+    - wrist_3_joint
+  gains: # Required because we're controlling an effort interface
+    shoulder_pan_joint: {p: 4000,  d: 200, i: 1, i_clamp: 1}
+    shoulder_lift_joint: {p: 10000,  d: 200, i: 1, i_clamp: 1}
+    elbow_joint: {p: 2000,  d: 20, i: 1, i_clamp: 1}
+    wrist_1_joint: {p: 500,  d: 1, i: 1, i_clamp: 1}
+    wrist_2_joint: {p: 500,  d: 1, i: 1, i_clamp: 1}
+    wrist_3_joint: {p: 10,  d: 0.1, i: 0, i_clamp: 1} 
+  constraints:
+    goal_time: 0.6
+    stopped_velocity_tolerance: 0.05
+    shoulder_pan_joint: {trajectory: 0.1, goal: 0.1}
+    shoulder_lift_joint: {trajectory: 0.1, goal: 0.1}
+    elbow_joint: {trajectory: 0.1, goal: 0.1}
+    wrist_1_joint: {trajectory: 0.1, goal: 0.1}
+    wrist_2_joint: {trajectory: 0.1, goal: 0.1}
+    wrist_3_joint: {trajectory: 0.1, goal: 0.1}
+  stop_trajectory_duration: 0.5
+  state_publish_rate: *loop_hz
+  action_monitor_rate: 10
+
+cartesian_velocity_controller:
+  type: cartesian_controller/CartesianVelocityController
+  publish_rate: 125
+  root_name: base_link
+  tip_name: wrist_3_link
+  joints:
+    - shoulder_pan_joint
+    - shoulder_lift_joint
+    - elbow_joint
+    - wrist_1_joint
+    - wrist_2_joint
+    - wrist_3_joint
+  solver:
+    error_scale: 0.5
+
+  pd_gains:
+      trans_x: {p: 0.05}
+      trans_y: {p: 0.05}
+      trans_z: {p: 0.05}
+      rot_x: {p: 1.5}
+      rot_y: {p: 1.5}
+      rot_z: {p: 1.5}
+
+joint1_pos_controller:
+  type: effort_controllers/JointPositionController
+  joint: shoulder_pan_joint
+  pid: {p: 4000.0, i: 1, d: 200.0, i_clamp: 1}
+joint2_pos_controller:
+  type: effort_controllers/JointPositionController
+  joint: shoulder_lift_joint
+  pid: {p: 10000.0, i: 1, d: 200.0, i_clamp: 1}
+joint3_pos_controller:
+  type: effort_controllers/JointPositionController
+  joint: elbow_joint
+  pid: {p: 1000.0, i: 1, d: 20.0, i_clamp: 1}
+joint4_pos_controller:
+  type: effort_controllers/JointPositionController
+  joint: wrist_1_joint
+  pid: {p: 500.0, i: 1, d: 1, i_clamp: 1}
+joint5_pos_controller:
+  type: effort_controllers/JointPositionController
+  joint: wrist_2_joint
+  pid: {p: 500.0, i: 1, d: 1, i_clamp: 1}
+joint6_pos_controller:
+  type: effort_controllers/JointPositionController
+  joint: wrist_3_joint
+  pid: {p: 10.0, i: 0, d: 0.1, i_clamp: 1}
