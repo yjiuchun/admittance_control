@@ -1,13 +1,13 @@
 #! Param 1
-mass_arm: [50,0,0,
-           0,50,0,
-           0,0,50]
+mass_arm: [20,0,0,
+           0,20,0,
+           0,0,20]
 damping_arm: [50,0,0,
               0,50,0,
               0,0,50]
-stiffness_coupling: [30,0,0,
-                     0,30,0,
-                     0,0,30]
+stiffness_coupling: [100,0,0,
+                     0,100,0,
+                     0,0,100]
 
 arm_max_vel: 1.5
 arm_max_acc: 1.0

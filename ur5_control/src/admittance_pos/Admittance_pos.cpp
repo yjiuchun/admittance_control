@@ -133,8 +133,8 @@ void AdmittancePos::current_end_wrench_callback(const geometry_msgs::WrenchStamp
     get_rotation_matrix(rotation_ft_base, listener_ft_, base_link_, end_link_);
     wrench_base_frame = rotation_ft_base * wrench_ft_frame;
     current_base_wrench_ = wrench_base_frame.head<3>();
-    current_base_wrench_[0] = current_base_wrench_[0];
-    current_base_wrench_[1] = current_base_wrench_[1];
+    current_base_wrench_[0] = -current_base_wrench_[0];
+    current_base_wrench_[1] = -current_base_wrench_[1];
     current_base_wrench_[2] = current_base_wrench_[2];
     // for(int i=0;i<3;i++)
     // {
